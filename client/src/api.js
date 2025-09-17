@@ -1,8 +1,14 @@
 import axios from 'axios'
 
+const base = import.meta.env.VITE_API_BASE || 'http://localhost:4000/api'
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE || 'http://localhost:4000/api'
+  baseURL: base,
+  withCredentials: true
 })
+if (typeof window !== 'undefined') {
+  // Debug: remove after confirming deployment
+  console.debug('[api] baseURL =', base)
+}
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')

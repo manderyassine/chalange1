@@ -14,10 +14,11 @@ function signRefreshToken(user) {
 }
 
 function setRefreshCookie(res, token) {
+  const secure = process.env.SECURE_COOKIES === 'true' || process.env.NODE_ENV === 'production';
   res.cookie('jid', token, {
     httpOnly: true,
-    sameSite: 'lax',
-    secure: false, // set true if using https
+    sameSite: secure ? 'none' : 'lax', // 'none' required for cross-site cookies
+    secure, // must be true for SameSite=None over https
     path: '/api/auth/refresh',
     maxAge: 30 * 24 * 60 * 60 * 1000
   });

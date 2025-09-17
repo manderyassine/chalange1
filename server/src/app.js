@@ -14,7 +14,21 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:5173', credentials: true }));
+// Support multiple origins (comma separated) and proper credentials handling
+const originsEnv = process.env.CORS_ORIGIN || 'http://localhost:5173';
+const allowedOrigins = originsEnv.split(',').map(o => o.trim()).filter(Boolean);
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow non-browser requests (no origin) such as curl / server-to-server
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS: ' + origin));
+  },
+  credentials: true
+}));
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('dev'));
