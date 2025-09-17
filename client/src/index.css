@@ -1,0 +1,101 @@
+:root {
+	--bg: #0b1020;
+	--card: #0f172a;
+	--muted: #a3b1c6;
+	--text: #e6eefc;
+	--primary: #1f6feb;
+	--primary-600: #316dca;
+	--danger: #ef4444;
+	--ring: rgba(31, 111, 235, 0.4);
+}
+
+[data-theme="light"] {
+	--bg: #f7f8fb;
+	--card: #ffffff;
+	--muted: #5a6b86;
+	--text: #111827;
+	--primary: #1f6feb;
+	--primary-600: #255db7;
+	--danger: #b00020;
+	--ring: rgba(31, 111, 235, 0.22);
+}
+
+* { box-sizing: border-box }
+html, body, #root { height: 100% }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif }
+
+.container { max-width: 950px; margin: 0 auto; padding: 16px }
+
+/* Links and nav */
+nav { background: rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(6px) }
+nav .bar { display: flex; gap: 10px; align-items: center; padding: 12px 16px }
+nav a { text-decoration: none; color: var(--muted); padding: 8px 10px; border-radius: 8px }
+nav a:hover { background: rgba(255,255,255,0.06); color: var(--text) }
+nav a.active { color: var(--text); background: rgba(31,111,235,0.18) }
+nav .spacer { flex: 1 }
+
+/* Headings */
+h1, h2, h3 { margin: 12px 0 10px }
+h2 { display: flex; align-items: center; gap: 8px; font-size: 22px }
+h3 { display: flex; align-items: center; gap: 8px; font-size: 18px; color: var(--muted) }
+
+/* Forms */
+input, textarea, select, button { font: inherit }
+input, textarea, select {
+	padding: 10px 12px; border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; background: #0b1227; color: var(--text);
+	outline: none; transition: border-color .2s, box-shadow .2s
+}
+input::placeholder, textarea::placeholder { color: #75839d }
+input:focus, textarea:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--ring) }
+
+button { cursor: pointer; background: var(--primary); color: white; border: 1px solid transparent; padding: 10px 14px; border-radius: 10px; font-weight: 600; box-shadow: 0 6px 20px rgba(31,111,235,0.25); transition: transform .08s ease, background .2s ease, box-shadow .2s ease }
+button:hover { background: var(--primary-600) }
+button.ghost { background: transparent; border-color: rgba(255,255,255,0.16); color: var(--text) }
+button.ghost:hover { background: rgba(255,255,255,0.06) }
+button:disabled { background: #2a426f; color: #b8c7e6; box-shadow: none }
+button:active { transform: translateY(1px) }
+
+/* Cards */
+.card { background: var(--card); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 14px; transition: border-color .2s, box-shadow .2s, transform .08s }
+.card + .card { margin-top: 10px }
+.card:hover { border-color: rgba(255,255,255,0.14) }
+
+/* Lists */
+ul.clean { list-style: none; padding: 0; margin: 0 }
+.item { display: flex; gap: 10px; align-items: center; padding: 10px; background: #0b1227; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; transition: background .2s, border-color .2s, transform .08s }
+.item + .item { margin-top: 8px }
+.item:hover { background: #0d1530; border-color: rgba(255,255,255,0.14) }
+.item:active { transform: translateY(1px) }
+
+.muted { color: var(--muted) }
+.error { color: var(--danger) }
+.row { display: flex; gap: 12px; align-items: center }
+.grow { flex: 1 }
+.right { margin-left: auto }
+
+/* Icon alignment */
+.ui { display: inline-flex; align-items: center; gap: 8px }
+.ui i { font-size: 1.1em }
+
+/* Grid helpers */
+.grid { display: grid; gap: 12px }
+.grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+
+/* Toasts */
+.toast-container { position: fixed; right: 16px; top: 16px; display: grid; gap: 10px; z-index: 1000 }
+.toast { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.12); background: var(--card); color: var(--text); box-shadow: 0 10px 30px rgba(0,0,0,.25); animation: toast-in .16s ease-out }
+.toast.success { border-color: rgba(16, 185, 129, 0.4) }
+.toast.error { border-color: rgba(239, 68, 68, 0.5) }
+.toast.info { border-color: rgba(59, 130, 246, 0.5) }
+.toast .close { background: transparent; border: none; color: inherit }
+
+@keyframes toast-in { from { opacity: 0; transform: translateY(-6px) } to { opacity: 1; transform: translateY(0) } }
+
+/* Auth pages */
+.page-center { min-height: calc(100vh - 160px); display: grid; place-items: center; }
+.auth-card { width: 100%; max-width: 420px }
+.text-center { text-align: center }
+
+@media (max-width: 720px) {
+	.grid-2 { grid-template-columns: 1fr }
+}
