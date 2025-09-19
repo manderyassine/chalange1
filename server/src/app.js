@@ -17,18 +17,38 @@ const app = express();
 // Support multiple origins (comma separated) and proper credentials handling
 const originsEnv = process.env.CORS_ORIGIN || 'http://localhost:5173';
 const allowedOrigins = originsEnv.split(',').map(o => o.trim()).filter(Boolean);
+const allowAll = allowedOrigins.includes('*');
 
-app.use(cors({
+const corsOptions = {
   origin: function (origin, callback) {
     // Allow non-browser requests (no origin) such as curl / server-to-server
     if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
+    if (allowAll || allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
     return callback(new Error('Not allowed by CORS: ' + origin));
   },
-  credentials: true
-}));
+  credentials: true,
+  methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization'],
+  optionsSuccessStatus: 204
+};
+
+// Optional CORS debug
+if (process.env.DEBUG_CORS === 'true') {
+  app.use((req, _res, next) => {
+    const origin = req.headers.origin;
+    const isAllowed = allowAll || allowedOrigins.includes(origin);
+    if (req.method === 'OPTIONS' || req.path.startsWith('/api/')) {
+      console.log(`[CORS] origin=${origin} allowed=${isAllowed} method=${req.method} path=${req.path}`);
+    }
+    next();
+  });
+}
+
+app.use(cors(corsOptions));
+// Explicitly handle preflight
+app.options('*', cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('dev'));

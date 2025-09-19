@@ -33,6 +33,7 @@ function Layout({ children }) {
     <div>
       <nav>
         <div className="bar container">
+          <NavLink to="/" className="ui" style={{ fontWeight:700 }}><i className="uil uil-bolt"/> PerfectTask</NavLink>
           <NavLink to="/tasks" className="ui"><i className="uil uil-check-square"/> Tasks</NavLink>
           <NavLink to="/notes" className="ui"><i className="uil uil-notes"/> Notes</NavLink>
           <NavLink to="/weather" className="ui"><i className="uil uil-cloud-sun"/> Weather</NavLink>
